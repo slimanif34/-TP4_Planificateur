@@ -10,6 +10,4 @@ public:
     virtual void executer(ContexteRobot& ctx) = 0;
     virtual void afficherNom() const;
 };
-
-
 #endif // ACTIONROBOT_H

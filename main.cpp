@@ -89,13 +89,94 @@
 //    return 0;
 //}
 
-//////////////// BONUS TP3 ROBOT  ///////////////////////////////////////
-// Ajout du journal d'actions
-// Ajout tempo
+////////////////// BONUS TP3 ROBOT  ///////////////////////////////////////
+//// Ajout du journal d'actions
+//// Ajout tempo
+
+//#include <thread> // pour gestion de la tempo
+//#include <chrono> // pour gestion de la tempo
+
+
+//#include <iostream>
+//#include <fstream>
+//#include <string>
+
+//#include "contexterobot.h"
+//#include "sequenceactions.h"
+//#include "ouvrirpince.h"
+//#include "fermerpince.h"
+//#include "deplacer.h"
+//#include "allera.h" //bonus
+//#include "poserobjet.h" // bonus
+
+//int main() {
+//    ContexteRobot ctx(0, 0, 100, true);
+//    SequenceActions plan;
+
+//    std::ofstream journal("data/journal.txt");
+//    if (!journal) {
+//        std::cerr << "Impossible de créer journal.txt\n";
+//    }
+
+//    std::ifstream fichier("data/plan.txt");
+//    if (!fichier.is_open()) {
+//        std::cerr << "Erreur : impossible d'ouvrir le fichier plan.txt" << std::endl;
+//        return 1;
+//    }
+
+//    std::string commande;
+//    while (fichier >> commande) {
+//        if (commande == "DEPLACER") {
+//            double dx, dy, dz;
+//            fichier >> dx >> dy >> dz;
+//            plan.ajouter(new Deplacer(dx, dy, dz));
+//            journal << "DEPLACER " << dx << " " << dy << " " << dz << "\n";
+//        }
+//        else if (commande == "OUVRIR_PINCE") {
+//            plan.ajouter(new OuvrirPince());
+//            journal << "OUVRIR_PINCE\n";
+//        }
+//        else if (commande == "FERMER_PINCE") {
+//            plan.ajouter(new FermerPince());
+//            journal << "FERMER_PINCE\n";
+//        }
+//        else if (commande == "ALLERA") {
+//            double x, y, z;
+//            fichier >> x >> y >> z;
+//            plan.ajouter(new AllerA(x, y, z));
+//            journal << "ALLERA " << x << " " << y << " " << z << "\n";
+//        }
+//        else if (commande == "POSEROBJET") {
+//            double x, y, z;
+//            fichier >> x >> y >> z;
+//            plan.ajouter(new PoserObjet(x, y, z));
+//            journal << "POSEROBJET " << x << " " << y << " " << z << "\n";
+//        }
+//        else {
+//            std::cerr << "Commande inconnue : " << commande << std::endl;
+//        }
+//    }
+
+//    fichier.close();
+//    journal.close();
+
+//    std::cout << "\n--- Execution du plan ---" << std::endl;
+//    plan.executer(ctx);
+
+//    std::cout << "\n--- Etat final du robot ---" << std::endl;
+//    ctx.afficherPosition();
+
+//    plan.nettoyer();
+//    return 0;
+//}
+
+
+//////////////// TP4 ///////////////////////////////////////
+// Ajout rotation
 
 #include <thread> // pour gestion de la tempo
 #include <chrono> // pour gestion de la tempo
-
+#include "attendre.h"
 
 #include <iostream>
 #include <fstream>
@@ -108,6 +189,7 @@
 #include "deplacer.h"
 #include "allera.h" //bonus
 #include "poserobjet.h" // bonus
+#include "rotation.h" // ajout TP4
 
 int main() {
     ContexteRobot ctx(0, 0, 100, true);
@@ -152,6 +234,18 @@ int main() {
             plan.ajouter(new PoserObjet(x, y, z));
             journal << "POSEROBJET " << x << " " << y << " " << z << "\n";
         }
+        else if (commande == "ATTENDRE") {
+            int ms;
+            fichier >> ms;
+            plan.ajouter(new Attendre(ms));
+            journal << "ATTENDRE " << ms << "\n";
+        }
+        else if (commande == "ROTATION") {     // <-- AJOUT TP4
+                   int angle;
+                   fichier >> angle;
+                   plan.ajouter(new Rotation(angle));
+                   journal << "ROTATION " << angle << "\n";
+               }
         else {
             std::cerr << "Commande inconnue : " << commande << std::endl;
         }
@@ -165,9 +259,6 @@ int main() {
 
     std::cout << "\n--- Etat final du robot ---" << std::endl;
     ctx.afficherPosition();
-
     plan.nettoyer();
     return 0;
 }
-
-
