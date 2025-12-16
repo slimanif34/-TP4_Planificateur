@@ -55,7 +55,18 @@ void ContexteRobot::rotation(int p_angle) {
 
 
 // Affichage
+
 void ContexteRobot::afficherPosition() {
-    std::cout << "Position : (" << m_x << ", " << m_y << ", " << m_z << ")";
-    std::cout << " | Pince " << (m_pince_ouverte ? "ouverte" : "fermee") << " | Angle : "<<m_angleActuel<<" degres"<< std::endl;
+    std::cout << "======== ETAT DU ROBOT ========\n";
+    std::cout << "Position : X=" << m_x << " mm"
+              << ", Y=" << m_y << " mm"
+              << ", Z=" << m_z << " mm\n";
+    std::cout << "Pince    : " << (m_pince_ouverte ? "ouverte" : "fermee") << "\n";
+    std::cout << "Rotation : " << m_angleActuel << " degres\n";
+    std::cout << "===============================\n";
 }
+
+//void ContexteRobot::afficherPosition() {
+//    std::cout << "Position : (" << m_x << ", " << m_y << ", " << m_z << ")";
+//    std::cout << " | Pince " << (m_pince_ouverte ? "ouverte" : "fermee") << " | Angle : "<<m_angleActuel<<" degres"<< std::endl;
+//}
