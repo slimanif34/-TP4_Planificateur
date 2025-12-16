@@ -197,7 +197,7 @@ int main() {
 
     std::ofstream journal("data/journal.txt");
     if (!journal) {
-        std::cerr << "Impossible de créer journal.txt\n";
+        std::cerr << "Impossible de creer journal.txt\n";
     }
 
     std::ifstream fichier("data/plan.txt");
@@ -210,7 +210,14 @@ int main() {
     while (fichier >> commande) {
         if (commande == "DEPLACER") {
             double dx, dy, dz;
-            fichier >> dx >> dy >> dz;
+            if (!(fichier >> dx >> dy >> dz))
+               {
+                std::cerr <<"Erreur : parametres invalides pour DEPLACER\n";
+                fichier.clear();
+                fichier.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                continue;
+            }
+
             plan.ajouter(new Deplacer(dx, dy, dz));
             journal << "DEPLACER " << dx << " " << dy << " " << dz << "\n";
         }
@@ -224,25 +231,59 @@ int main() {
         }
         else if (commande == "ALLERA") {
             double x, y, z;
-            fichier >> x >> y >> z;
+            if (!(fichier >> x >> y >> z))
+               {
+                std::cerr <<"Erreur : parametres invalides pour ALLERA\n";
+                fichier.clear();
+                fichier.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                continue;
+            }
+
             plan.ajouter(new AllerA(x, y, z));
             journal << "ALLERA " << x << " " << y << " " << z << "\n";
         }
         else if (commande == "POSEROBJET") {
             double x, y, z;
-            fichier >> x >> y >> z;
+            if (!(fichier >> x >> y >> z))
+               {
+                std::cerr <<"Erreur : parametres invalides pour POSEROBJET\n";
+                fichier.clear();
+                fichier.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                continue;
+            }
             plan.ajouter(new PoserObjet(x, y, z));
             journal << "POSEROBJET " << x << " " << y << " " << z << "\n";
         }
         else if (commande == "ATTENDRE") {
             int ms;
-            fichier >> ms;
+            if (!(fichier >> ms))
+               {
+                std::cerr <<"Erreur : parametres invalides pour ATTENDRE\n";
+                fichier.clear();
+                fichier.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                continue;
+            }
+
+            // vérifie qu'il ne reste pas un caractere colle au nombre (ex: 100b)
+            int next = fichier.peek();
+            if (next != EOF && next != ' ' && next != '\n' && next != '\r' && next != '\t') {
+                std::cerr << "Erreur : parametre invalide pour ATTENDRE (caractere en trop)\n";
+                fichier.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                continue;
+            }
+
             plan.ajouter(new Attendre(ms));
             journal << "ATTENDRE " << ms << "\n";
         }
         else if (commande == "ROTATION") {     // <-- AJOUT TP4
                    int angle;
-                   fichier >> angle;
+                   if (!(fichier >> angle))
+                      {
+                       std::cerr <<"Erreur : parametres invalides pour ROTATION\n";
+                       fichier.clear();
+                       fichier.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                       continue;
+                   }
                    plan.ajouter(new Rotation(angle));
                    journal << "ROTATION " << angle << "\n";
                }
