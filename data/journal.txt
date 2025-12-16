@@ -1,5 +1,8 @@
-DEPLACER 10 0 0
-ATTENDRE 1000
+===== JOURNAL D'ACTIONS =====
+Format: Action + paramètres
+============================
+Action exécutée : DEPLACER | dx=10 mm, dy=0 mm, dz=0 mm
+Action exécutée : ATTENDRE | durée=1000 ms
 FERMER_PINCE
-ATTENDRE 500
-ROTATION 45
+Action exécutée : ATTENDRE | durée=500 ms
+Action exécutée : ROTATION | angle=45 degrés

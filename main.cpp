@@ -200,6 +200,10 @@ int main() {
         std::cerr << "Impossible de créer journal.txt\n";
     }
 
+    journal << "===== JOURNAL D'ACTIONS =====\n";
+    journal << "Format: Action + paramètres\n";
+    journal << "============================\n";
+
     std::ifstream fichier("data/plan.txt");
     if (!fichier.is_open()) {
         std::cerr << "Erreur : impossible d'ouvrir le fichier plan.txt" << std::endl;
@@ -212,7 +216,11 @@ int main() {
             double dx, dy, dz;
             fichier >> dx >> dy >> dz;
             plan.ajouter(new Deplacer(dx, dy, dz));
-            journal << "DEPLACER " << dx << " " << dy << " " << dz << "\n";
+            //journal << "DEPLACER " << dx << " " << dy << " " << dz << "\n";
+            journal << "Action exécutée : DEPLACER | dx=" << dx << " mm"
+                    << ", dy=" << dy << " mm"
+                    << ", dz=" << dz << " mm\n";
+
         }
         else if (commande == "OUVRIR_PINCE") {
             plan.ajouter(new OuvrirPince());
@@ -238,13 +246,17 @@ int main() {
             int ms;
             fichier >> ms;
             plan.ajouter(new Attendre(ms));
-            journal << "ATTENDRE " << ms << "\n";
+            //journal << "ATTENDRE " << ms << "\n";
+            journal << "Action exécutée : ATTENDRE | durée=" << ms << " ms\n";
+
         }
         else if (commande == "ROTATION") {     // <-- AJOUT TP4
                    int angle;
                    fichier >> angle;
                    plan.ajouter(new Rotation(angle));
-                   journal << "ROTATION " << angle << "\n";
+                   //journal << "ROTATION " << angle << "\n";
+                   journal << "Action exécutée : ROTATION | angle=" << angle << " degrés\n";
+
                }
         else {
             std::cerr << "Commande inconnue : " << commande << std::endl;
